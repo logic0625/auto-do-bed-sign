@@ -27,7 +27,7 @@ def init():
 
 def getCode(image):
     # 自动打码 注册地址 免费300积分
-    # https://console.jfbym.com/register/TG66434
+    # https://console.jfbym.com/register
     url = "http://api.jfbym.com/api/YmServer/customApi"
     payload = {
         "image": image,
@@ -44,19 +44,25 @@ def getCode(image):
 
 def login(session):
     params = {'uid': ''}
-    # yzm_url = 'https://ids.gzist.edu.cn/lyuapServer/kaptcha'
-    # response = session.get(yzm_url, params=params)
-    # uid = response.json()['uid']
-    # yzm_base64 = re.search('base64,(.*)', response.json()['content']).group(1)
-    # yzm = getCode(yzm_base64)
+    yzm_url = 'https://ids.gzist.edu.cn/lyuapServer/kaptcha'
+    response = session.get(yzm_url, params=params)
+    uid = response.json()['uid']
+
+    # 检查是否存在验证码
+    yzm = None
+    if 'content' in response.json() and response.json()['content']:
+        # 存在验证码，需要进行打码
+        yzm_base64 = re.search('base64,(.*)', response.json()['content']).group(1)
+        yzm = getCode(yzm_base64)
+
     psw = ctx.call('G5116', os.getenv('USERNAME'), os.getenv('PASSWORD'), '')
     data = {
         'username': os.getenv('USERNAME'),
         'password': str(psw),
         'service': 'https://xsfw.gzist.edu.cn/xsfw/sys/swmzncqapp/*default/index.do',
         'loginType': '',
-        # 'id': uid,
-        # 'code': str(yzm),
+        'id': uid,
+        'code': str(yzm) if yzm is not None else '',
     }
     # 一次登陆
     response = session.post('https://ids.gzist.edu.cn/lyuapServer/v1/tickets', data=data)
