@@ -51,9 +51,11 @@ def login(session):
     # 检查是否存在验证码
     yzm = None
     if 'content' in response.json() and response.json()['content']:
-        # 存在验证码，需要进行打码
-        yzm_base64 = re.search('base64,(.*)', response.json()['content']).group(1)
-        yzm = getCode(yzm_base64)
+        # 存在验证码内容，尝试提取验证码
+        yzm_match = re.search('base64,(.*)', response.json()['content'])
+        if yzm_match:
+            yzm_base64 = yzm_match.group(1)
+            yzm = getCode(yzm_base64)
 
     psw = ctx.call('G5116', os.getenv('USERNAME'), os.getenv('PASSWORD'), '')
     data = {
@@ -62,8 +64,12 @@ def login(session):
         'service': 'https://xsfw.gzist.edu.cn/xsfw/sys/swmzncqapp/*default/index.do',
         'loginType': '',
         'id': uid,
-        'code': str(yzm) if yzm is not None else '',
     }
+    
+    # 只有在验证码存在时才添加code参数
+    if yzm is not None:
+        data['code'] = str(yzm)
+
     # 一次登陆
     response = session.post('https://ids.gzist.edu.cn/lyuapServer/v1/tickets', data=data)
     if 'NOUSER' in response.json():
