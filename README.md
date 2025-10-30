@@ -12,6 +12,7 @@
 ## 变量在仓库的Settings --> Secrets中配置
 
 [学工平台](https://ids.gzist.edu.cn/lyuapServer/login)
+![img.png](gzlg助手/img/Snipaste_2025-10-30_23-28-02.png)
 
     USERNAME # 上面学工平台的账号
     PASSWORD # 上面学工平台的密码
@@ -37,6 +38,7 @@
 3. 配置定时任务
 
 4. 配置成功后，在仓库的Actions中查看运行情况
+![img.png](gzlg助手/img/Snipaste_2025-10-30_23-30-31.png)
 
 5. 效果图
 
