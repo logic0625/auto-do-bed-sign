@@ -11,8 +11,11 @@
 
 ## 变量在仓库的Settings --> Secrets中配置
 
-[学工平台](https://ids.gzist.edu.cn/lyuapServer/login)
+## [学工平台](https://ids.gzist.edu.cn/lyuapServer/login)
+### 首先进入学工平台，点击登录，找到账号密码登录
+
 ![img.png](gzlg助手/img/Snipaste_2025-10-30_23-28-02.png)
+### 无顺序要求，需要按照将每个参数一个个的添加到Repository secrets中
 
     USERNAME # 上面学工平台的账号
     PASSWORD # 上面学工平台的密码
